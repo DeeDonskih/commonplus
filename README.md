@@ -1,3 +1,4 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/deedonskih/commonplus/badge)](https://www.codefactor.io/repository/github/deedonskih/commonplus)
 # Common plus
 ### Common, usefull functions/structures/classes, helpers for c++(17,20)
 -------------------------------------------------------------------------
