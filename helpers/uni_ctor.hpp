@@ -15,7 +15,7 @@
 
 #if __cplusplus >= 201103L
 #include<functional>
-namespace  {
+namespace  commons{
 
 	/**
 	 * @brief Unified constructor(libc++) new_allocator.h
@@ -43,7 +43,5 @@ namespace  {
 	destroy(_Up* __p)
 	noexcept(std::is_nothrow_destructible<_Up>::value)
 	{ __p->~_Up(); }
-
-
-
-#endif
+}
+#endif // Has functional check
