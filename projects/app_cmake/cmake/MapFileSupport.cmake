@@ -1,0 +1,6 @@
+function(enable_mapfile target)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        set(mapfile "${CMAKE_BINARY_DIR}/${target}.map")
+        target_link_options(${target} PRIVATE "-Wl,-Map=${mapfile}")
+    endif()
+endfunction()
