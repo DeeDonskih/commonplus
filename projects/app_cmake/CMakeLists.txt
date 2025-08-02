@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.18)
 project(ExampleApp VERSION 0.1.0 LANGUAGES C CXX)
 
 # Project configuration
@@ -14,7 +14,9 @@ endif ()
 
 # Project options
 option(ENABLE_MAXOPT "Enable maximum optimization with LTO" OFF)
-option(ENABLE_PACK_EXAMPLE "Enables creating packages with cpack" ON)
+option(ENABLE_PACK_EXAMPLE "Enable creating packages with cpack" ON)
+option(ENABLE_TESTS_EXAMPLE "Enable building example test projects" OFF)
+option(EMBEDDED_TARGET_OPTS "Disable Exceptions and RTTI(common for embedded projects). Example of conditional options" ON)
 
 # Add custom cmake modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -67,12 +69,12 @@ target_include_directories(${MAIN_TARGET} PRIVATE
 # Link libraries using modern CMake approach
 target_link_libraries(${MAIN_TARGET} PRIVATE
         SubLib
-        ${JPEG_LIBRARIES}
+        ${JPEG_LINK_LIBRARIES}
         Threads::Threads
 )
 
-# Compiler-specific flags for exceptions and RTTI
-target_compile_options(${MAIN_TARGET} PRIVATE -fno-rtti -fno-exceptions)
+# Compiler-specific flags for exceptions and RTTI (optiopnal enabled/disabled)
+target_compile_options(${MAIN_TARGET} PRIVATE $<$<BOOL:${EMBEDDED_TARGET_OPTS}>:-fno-rtti -fno-exceptions>)
 
 # Handle OpenCV linking and definitions
 if (OpenCV_FOUND)
@@ -136,7 +138,6 @@ install(TARGETS SubLib
 # `cpack -G "DEB;RPM;TGZ"` - for all
 if (ENABLE_PACK_EXAMPLE)
     # CPack configuration
-    include(CPack)
     set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
     set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
     set(CPACK_PACKAGE_CONTACT "developer@example.com")
@@ -154,7 +155,7 @@ with external dependencies and shared libraries.")
         set(CPACK_BUNDLE_STARTUP_COMMAND "${PROJECT_NAME}.app/Contents/MacOS/${PROJECT_NAME}")
     elseif (UNIX)
         # Linux packaging
-        set(CPACK_GENERATOR "DEB;RPM;TGZ")
+        set(CPACK_GENERATOR "DEB;RPM;STGZ;TGZ")
         # DEB package configuration
         set(CPACK_BINARY_DEB ON)
         set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${CPACK_PACKAGE_CONTACT}")
@@ -183,11 +184,13 @@ with external dependencies and shared libraries.")
 
     # Set package file names
     set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
+    include(CPack)
 endif ()
 
 # Testing configuration
-enable_testing()
-add_subdirectory(tests)
+if (ENABLE_TESTS_EXAMPLE)
+    add_subdirectory(tests)
+endif ()
 
 # Display configuration summary
 message(STATUS "=== Build Configuration Summary ===")
@@ -203,9 +206,9 @@ message(STATUS "Max optimization: ${ENABLE_MAXOPT}")
 message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "Binary dir: ${CMAKE_INSTALL_FULL_BINDIR}")
 message(STATUS "Library dir: ${CMAKE_INSTALL_FULL_LIBDIR}")
-    if (ENABLE_PACK_EXAMPLE AND APPLE)
-        message(STATUS "Package type: DMG image")
-    elseif (ENABLE_PACK_EXAMPLE AND UNIX)
-        message(STATUS "Package types: DEB, RPM, TGZ")
-    endif ()
+if (ENABLE_PACK_EXAMPLE AND APPLE)
+    message(STATUS "Package type: DMG image")
+elseif (ENABLE_PACK_EXAMPLE AND UNIX)
+    message(STATUS "Package types: DEB, RPM, TGZ")
+endif ()
 message(STATUS "===================================")

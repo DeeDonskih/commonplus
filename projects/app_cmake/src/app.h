@@ -2,6 +2,7 @@
 
 #include <iostream>
 
-inline void say_hello() {
-    std::cout << "Hello from app.h\n";
+inline void say_hello()
+{
+  std::cout << "Hello from app.h\n";
 }
