@@ -4,10 +4,10 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>MyApp</string>
+    <string>ExampleApp</string>
     <key>CFBundleExecutable</key>
-    <string>MyApp</string>
+    <string>ExampleApp</string>
     <key>CFBundleIdentifier</key>
-    <string>com.example.myapp</string>
+    <string>com.example.exampleapp</string>
 </dict>
 </plist>
