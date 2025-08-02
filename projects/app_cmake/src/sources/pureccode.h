@@ -1,5 +1,5 @@
-#ifndef _THIS_IS_MY_HEADER_GUARD_
-#define _THIS_IS_MY_HEADER_GUARD_
+#ifndef THIS_IS_THE_HEADER_GUARD_W2sC9cyd13KRkaE4C_BFN
+#define THIS_IS_THE_HEADER_GUARD_W2sC9cyd13KRkaE4C_BFN
 
 #ifdef __cplusplus
 extern "C"

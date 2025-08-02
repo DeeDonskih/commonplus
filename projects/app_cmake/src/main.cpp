@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#ifdef MA_NO_OPENCV
+#ifdef EXAMPLE_NO_OPENCV_DEF
 #warning "OpenCV is not enabled"
 #endif
 
