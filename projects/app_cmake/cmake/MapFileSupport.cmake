@@ -1,3 +1,6 @@
+# Function to enable map file generation for a target.
+# Args:
+#   target - The name of the target to enable map file generation for
 function(enable_mapfile target)
     set(mapfile "${CMAKE_BINARY_DIR}/${target}.map")
     if(APPLE)
